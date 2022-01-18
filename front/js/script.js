@@ -17,7 +17,7 @@ const kanapDisplay = async () => {
     <a href="./product.html?id=${kanap._id}">
     <article>
         <h3 class="productName" >${kanap.name} </h3>
-        <img src="${kanap.imageUrl}" alt="image test">
+        <img src="${kanap.imageUrl}" alt="${kanap.altTxt}">
         <p class="productDescription">${kanap.description}</p>  
     </article>`
     )

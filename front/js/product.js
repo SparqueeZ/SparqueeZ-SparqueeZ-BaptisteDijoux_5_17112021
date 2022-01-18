@@ -1,27 +1,47 @@
-let kanapData = [];
+//Focus sur l'ID
+const product = window.location.search.split("?id=").join("");
+console.log(product);
 
-const fetchKanap = async () => {
-    await fetch("http://localhost:3000/api/products")
-    .then ((res) => res.json())
-    .then ((promise) => {
-        kanapData = promise;
-        console.log(kanapData);
-    })
-};
+let productData = [];
 
-const kanapDisplay = async () => {
-    await fetchKanap();
+//Importe les données du produit (name,price,img, etc..)
+const fetchProduct = async () =>
+    await fetch(`http://localhost:3000/api/products/${product}`).then((res) => res.json())
+    .then((promise) => {
+        productData = promise
+        console.log(promise);
+    });
 
-    document.getElementById("items")
-    .innerHTML = kanapData.map((kanap) => `
-    <a href="./product.html?id=${kanap._id}">
-    <article>
-        <h3 class="productName" >${kanap.name} </h3>
-        <img src="${kanap.imageUrl}" alt="image test">
-        <p class="productDescription">${kanap.description}</p>  
-    </article>`
-    )
-    .join(""); //enlever les virgules
-};
+const productDisplay = async () => {
+    await fetchProduct();
 
-kanapDisplay();
+    //Affiche l'image du produit
+    document.querySelector(".item__img")
+        .innerHTML = `<img src="${productData.imageUrl}" alt="image test"></img>`;
+
+    //Affiche le nom du produit
+    document.getElementById("title")
+        .innerHTML = `${productData.name}`;
+
+    //Affiche le prix du produit
+    document.getElementById("price")
+        .innerHTML = `${productData.price}`;
+    
+    //Affiche la description du produit
+    document.getElementById("description")
+        .innerHTML = `${productData.description}`;
+    
+    //Affiche la couleur du produit
+    let select = document.getElementById("colors")
+    //Création d'une boucle avec forEach
+    productData.colors.forEach(colors => {
+        let colorSelect = document.createElement("option");
+        //Nommer et insérer les valeurs des couleurs
+        colorSelect.innerHTML = `${colors}`;
+        colorSelect.value = `${colors}`;
+        //Afficher la couleur dans la liste déroulante
+        select.appendChild(colorSelect)
+    });
+}
+
+productDisplay ()
